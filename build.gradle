@@ -34,6 +34,21 @@ dependencies {
 task copyFile(){
 	copy{
 		from '/build/libs/'
-		into 'C:/Users/jrgm/Downloads'
+		into '.'
+	}
+	doLast {
+		print 'File Copied'
 	}
 }
+
+task deleteFiles(type: Delete) {
+	delete fileTree('.') {
+		include rootProject.name+'.jar'
+	}
+
+	doLast {
+		print 'File deleted'
+	}
+}
+
+//copyFile.dependsOn deleteFiles
