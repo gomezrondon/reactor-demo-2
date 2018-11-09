@@ -45,15 +45,14 @@ public class ReactorDemo2Application implements CommandLineRunner {
 
 
     // how to build: gradle clean build -x test copyFile
-	// how to run: java -jar reactor-demo-2.jar <folder> <String to search>
+	// how to run: java -jar reactor-demo-2.jar <folder>  // C:\tmp\comparacion\data-log.txt
 	// menu: ./option.sh 7 <folder> <String to search>
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println(ANSI_YELLOW + "********************" + ANSI_YELLOW);
-		String str = args[1];
 		String folder = args[0];
 
-		if(str != null){
+		if(folder != null){
 			searchStringFunction(service.readFile(folder));
 		}
 
@@ -66,9 +65,17 @@ public class ReactorDemo2Application implements CommandLineRunner {
 		fileFlux
 				.windowWhile(s -> !s.contains("\uF189ip"))
 				.flatMap(ventana -> ventana.skip(2))
-				.filter(line -> line.length() > 20)
-				.map(processor::dataLoadStatFormat)
+				.filter(line -> line.length() > 100)
+				.flatMap(processor::dataLoadStatFormat)
 				.subscribe(System.out::println);
+
+		/* Output example
+		   1~2018-11-08T00:03:46~ 9411399~2018-11-07T16:15:04~ 7:48~pw-dataload-20181107161504-uat-3.7.tar~
+		   2~2018-11-08T00:08:19~ 9684080~2018-11-07T16:15:04~ 7:53~pw-dataload-20181107161504-uat-3.7.tar~*
+		   3~2018-11-08T00:12:54~ 9958828~2018-11-07T17:49:45~ 6:23~pw-dataload-20181107174945-uat-3.7.tar~
+		   4~2018-11-08T00:17:05~10209506~2018-11-07T17:29:45~ 6:47~pw-dataload-20181107172945-uat-3.7.tar~
+		*/
+
 	}
 
 }

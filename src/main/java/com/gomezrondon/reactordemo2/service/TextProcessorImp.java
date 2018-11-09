@@ -14,9 +14,9 @@ import java.util.regex.Pattern;
 @Service
 public class TextProcessorImp implements TextProcessorService {
 
-    public Flux<String> dataLoadStatFormat(String line){
+    List<String> tarfilesProcessed = new ArrayList<>();
 
-        List<String> tarfilesProcessed = new ArrayList<>();
+    public Flux<String> dataLoadStatFormat(String line){
 
         String[] var = line.split(" ");
         String dataLoadDate = var[0]+var[1].substring(0,8);;
